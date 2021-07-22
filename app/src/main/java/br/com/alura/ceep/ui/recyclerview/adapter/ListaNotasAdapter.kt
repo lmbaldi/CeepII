@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.ceep.BR
 import br.com.alura.ceep.R
+import br.com.alura.ceep.databinding.ItemNotaBinding
 import br.com.alura.ceep.model.Nota
 import br.com.alura.ceep.ui.extensions.carregaImagem
 import kotlinx.android.synthetic.main.item_nota.view.*
@@ -27,7 +28,7 @@ class ListaNotasAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
-        val viewDataBinding: ViewDataBinding =  DataBindingUtil.inflate<ViewDataBinding>(inflater, R.layout.item_nota, parent, false)
+        val viewDataBinding: ItemNotaBinding =  ItemNotaBinding.inflate(inflater, parent, false)
         return ViewHolder(viewDataBinding)
     }
 
@@ -37,13 +38,9 @@ class ListaNotasAdapter(
         }
     }
 
-    inner class ViewHolder(private val viewDataBinding: ViewDataBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
+    inner class ViewHolder(private val viewDataBinding: ItemNotaBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
 
         private lateinit var nota: Nota
-        private val campoImagem: ImageView by lazy {
-            itemView.item_nota_imagem
-        }
-
         init {
             itemView.setOnClickListener {
                 if (::nota.isInitialized) {
@@ -54,7 +51,7 @@ class ListaNotasAdapter(
 
         fun vincula(nota: Nota) {
             this.nota = nota
-            viewDataBinding.setVariable(BR.nota, nota)
+            viewDataBinding.nota = nota
         }
 
     }
@@ -71,7 +68,3 @@ object DiffCallback : DiffUtil.ItemCallback<Nota>() {
 
 }
 
-@BindingAdapter("carregaImagem")
-fun carregaImagemPorUrl(view: ImageView, url: String){
-    view.carregaImagem(url)
-}
