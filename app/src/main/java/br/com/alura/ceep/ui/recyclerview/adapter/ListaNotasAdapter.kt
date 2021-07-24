@@ -28,7 +28,7 @@ class ListaNotasAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
-        val viewDataBinding: ItemNotaBinding =  ItemNotaBinding.inflate(inflater, parent, false)
+        val viewDataBinding: ItemNotaBinding = ItemNotaBinding.inflate(inflater, parent, false)
         return ViewHolder(viewDataBinding)
     }
 
@@ -38,20 +38,25 @@ class ListaNotasAdapter(
         }
     }
 
-    inner class ViewHolder(private val viewDataBinding: ItemNotaBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
+    inner class ViewHolder(private val viewDataBinding: ItemNotaBinding) :
+        RecyclerView.ViewHolder(viewDataBinding.root), View.OnClickListener {
 
         private lateinit var nota: Nota
+
         init {
-            itemView.setOnClickListener {
-                if (::nota.isInitialized) {
-                    onItemClickListener(nota)
-                }
-            }
+            viewDataBinding.clicaNaNota = this
         }
+
 
         fun vincula(nota: Nota) {
             this.nota = nota
             viewDataBinding.nota = nota
+        }
+
+        override fun onClick(v: View?) {
+            if (::nota.isInitialized) {
+                onItemClickListener(nota)
+            }
         }
 
     }
